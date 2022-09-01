@@ -136,7 +136,3 @@ function findStrikeBonuses(scoresMap, strikesMap, frames) {
     }
   }
 }
-
-console.log(
-  frameCalculator([2, 6, "X", 3, 2, 4, 5, 2, 4, 3, "/", 3, 4, 1, 3, "X", "X"])
-);
