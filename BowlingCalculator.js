@@ -109,31 +109,34 @@ function findStrikeBonuses(scoresMap, strikesMap, frames) {
   for (let x = 0; x < strikeKeys.length; x++) {
     let key = parseInt(strikeKeys[x]);
 
-    // find if there are consecutive strikes and calculate the score bonus
-    for (let y = 1; y < 3; y++) {
-      if (frames[key + y]?.length > 1) {
-        // spares are a special case so have to deal with them accordingly
-        if (frames[key + y][1] === "/") {
-          strikesMap[key] = strikesMap[key] + 10;
-        } else {
-          strikesMap[key] =
-            strikesMap[key] + frames[key + y][0] + frames[key + y][1];
-        }
+    // only look at strikes that have a follow up roll or if it is the final roll
+    if (frames[key + 1] || key === 9) {
+      // find if there are consecutive strikes and calculate the score bonus
+      for (let y = 1; y < 3; y++) {
+        if (frames[key + y]?.length > 1) {
+          // spares are a special case so have to deal with them accordingly
+          if (frames[key + y][1] === "/") {
+            strikesMap[key] = strikesMap[key] + 10;
+          } else {
+            strikesMap[key] =
+              strikesMap[key] + frames[key + y][0] + frames[key + y][1];
+          }
 
-        break;
-        // a single frame can only reach a max score of 30
-      } else {
-        strikesMap[key] = strikesMap[key] + 10;
-        if (strikesMap[key] === 30) {
           break;
+          // a single frame can only reach a max score of 30
+        } else {
+          strikesMap[key] = strikesMap[key] + 10;
+          if (strikesMap[key] === 30) {
+            break;
+          }
         }
       }
-    }
 
-    scoresMap[key] = strikesMap[key];
+      scoresMap[key] = strikesMap[key];
+    }
   }
 }
 
 console.log(
-  frameCalculator([2, 6, "X", "X", "X", "X", 3, "/", 3, 4, 1, 3, "X"])
+  frameCalculator([2, 6, "X", 3, 2, 4, 5, 2, 4, 3, "/", 3, 4, 1, 3, "X", "X"])
 );
